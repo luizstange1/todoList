@@ -1,0 +1,22 @@
+.header {
+  height: 12.5rem;
+  background-color: var(--gray-700);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.title {
+  color: var(--blue);
+  font-size: 2.75rem;
+}
+
+.title > span {
+  color: var(--purple-dark);
+}
+
+.logo {
+  height: 4rem;
+  width: 3rem;
+}

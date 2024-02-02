@@ -1,0 +1,47 @@
+.task {
+  background-color: var(--gray-500);
+  border-radius: 8px;
+  width: 46rem;
+  display: flex;
+  padding: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.taskDescription {
+  color: var(--gray-100);
+  font-size: 0.875rem;
+  flex: 1;
+  margin: 0 1.5rem;
+}
+
+.taskDescriptionOfTheCompletedTask {
+  color: var(--gray-300);
+  text-decoration: line-through;
+  flex: 1;
+  margin: 0 1.5rem;
+}
+
+.iconToCompleteTask,
+.deleteTaskIcon {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.iconToCompleteTask {
+  color: var(--blue);
+}
+
+.taskCompletedIcon {
+  color: var(--purple-dark);
+}
+
+.deleteTaskIcon:hover {
+  color: var(--danger);
+  background-color: var(--gray-400);
+}
+
+.completeTaskIcon:hover {
+  color: var(--blue-dark);
+}
