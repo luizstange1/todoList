@@ -1,59 +1,57 @@
 import { Trash, Circle, CheckCircle } from "@phosphor-icons/react";
 import styles from "./Task.module.css";
-import { useState } from "react";
+import { Task as ITask } from "../../App";
 
 interface TaskProps {
-  taskDescription: string;
-  id: string;
-  onDeleteTask: (idToDelete: string) => void;
-  completedTasks: number;
-  setCompletedTasks: (completedTasks: number) => void;
+  task: ITask;
+  onDelete: (id: string) => void;
+  onComplete: (id: string) => void;
 }
 
 export function Task({
-  taskDescription,
-  onDeleteTask,
-  id,
-  completedTasks,
-  setCompletedTasks,
-}: TaskProps) {
-  const [taskIsComplete, setTaskIsComplete] = useState(false);
+  task,
+  onDelete,
+  onComplete
+}: Readonly<TaskProps>) {
+  const taskIsComplete = task.status === 'done';
 
-  function hancleClickToCompleteTheTask() {
-    setTaskIsComplete(true);
-    setCompletedTasks(completedTasks + 1);
+  function handleComplete() {
+    onComplete(task.id);
   }
+
+  function handleDelete() {
+    onDelete(task.id);
+  }
+
   return (
-    <>
-      <div className={styles.task}>
-        {!taskIsComplete ? (
-          <Circle
-            className={styles.iconToCompleteTask}
-            size={24}
-            onClick={hancleClickToCompleteTheTask}
-          />
-        ) : (
-          <CheckCircle
-            size={24}
-            className={styles.taskCompletedIcon}
-            weight="fill"
-          />
-        )}
-        <p
-          className={
-            taskIsComplete
-              ? styles.taskDescriptionOfTheCompletedTask
-              : styles.taskDescription
-          }
-        >
-          {taskDescription}
-        </p>
-        <Trash
+    <div className={styles.task}>
+      {!taskIsComplete ? (
+        <Circle
+          className={styles.iconToCompleteTask}
           size={24}
-          className={styles.deleteTaskIcon}
-          onClick={() => onDeleteTask(id)}
+          onClick={handleComplete}
         />
-      </div>
-    </>
+      ) : (
+        <CheckCircle
+          size={24}
+          className={styles.taskCompletedIcon}
+          weight="fill"
+        />
+      )}
+      <p
+        className={
+          taskIsComplete
+            ? styles.taskDescriptionOfTheCompletedTask
+            : styles.taskDescription
+        }
+      >
+        {task.description}
+      </p>
+      <Trash
+        size={24}
+        className={styles.deleteTaskIcon}
+        onClick={handleDelete}
+      />
+    </div>
   );
 }
