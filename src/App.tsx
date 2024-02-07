@@ -3,36 +3,37 @@ import styles from "./App.module.css";
 
 import { Header } from "./components/Header/Header";
 import { ClipboardText, PlusCircle } from "@phosphor-icons/react";
-import { ChangeEvent, useState } from "react";
+import { useRef, useState } from "react";
 import { Task } from "./components/Task/Task";
 
 import { v4 as uuidv4 } from "uuid";
 
-interface TaskProps {
+export interface Task {
   id: string;
-  taskDescription: string;
+  description: string;
+  status: string;
 }
 
 function App() {
-  const [createdTasks, setCreatedTasks] = useState(0);
-  const [completedTasks, setCompletedTasks] = useState(0);
-  const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
-
-  function handleNewTaskChange(event: ChangeEvent<HTMLInputElement>) {
-    const newTaskInfo = event.target.value;
-    setNewTask(newTaskInfo);
-  }
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function handleCreateNewTask() {
+    const newTask = inputRef.current?.value;
+
+    if (!newTask) {
+      // algum tipo de feedback para o usuário
+      return;
+    }
+
     const newTaskObject = {
       id: uuidv4(),
-      taskDescription: newTask,
+      description: newTask,
+      status: "todo",
     };
 
     setTasks([...tasks, newTaskObject]);
-    setCreatedTasks(createdTasks + 1);
-    setNewTask("");
+    inputRef.current.value = "";
   }
 
   function deleteTask(idToDelete: string) {
@@ -41,9 +42,21 @@ function App() {
     });
 
     setTasks(newTaskList);
-    setCreatedTasks(createdTasks - 1);
-    setCompletedTasks(completedTasks - 1);
   }
+
+  function completeTask(taskId: string) {
+    const newTaskList = [...tasks];
+    const completedTask = newTaskList.find((item) => item.id === taskId);
+
+    if (completedTask) {
+      completedTask.status = "done";
+    }
+
+    setTasks(newTaskList);
+  }
+
+  const createdTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.status === "done").length;
 
   return (
     <div className={styles.wrapper}>
@@ -51,11 +64,10 @@ function App() {
 
       <div className={styles.inputArea}>
         <input
+          ref={inputRef}
           type="text"
           className={styles.textArea}
           placeholder="Adicione uma nova tarefa"
-          value={newTask}
-          onChange={handleNewTaskChange}
           required
         />
         <button className={styles.newTask} onClick={handleCreateNewTask}>
@@ -84,12 +96,10 @@ function App() {
             tasks.map((task) => {
               return (
                 <Task
-                  taskDescription={task.taskDescription}
-                  id={task.id}
                   key={task.id}
-                  onDeleteTask={deleteTask}
-                  completedTasks={completedTasks}
-                  setCompletedTasks={setCompletedTasks}
+                  task={task}
+                  onComplete={completeTask}
+                  onDelete={deleteTask}
                 />
               );
             })
