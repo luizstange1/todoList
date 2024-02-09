@@ -8,16 +8,15 @@ import { Task } from "./components/Task/Task";
 
 import { v4 as uuidv4 } from "uuid";
 
-interface TaskProps {
+interface Task {
   id: string;
-  taskDescription: string;
+  description: string;
+  status: string;
 }
 
 function App() {
-  const [createdTasks, setCreatedTasks] = useState(0);
-  const [completedTasks, setCompletedTasks] = useState(0);
   const [newTask, setNewTask] = useState("");
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleNewTaskChange(event: ChangeEvent<HTMLInputElement>) {
     const newTaskInfo = event.target.value;
@@ -27,11 +26,11 @@ function App() {
   function handleCreateNewTask() {
     const newTaskObject = {
       id: uuidv4(),
-      taskDescription: newTask,
+      description: newTask,
+      status: "Em andamento",
     };
 
     setTasks([...tasks, newTaskObject]);
-    setCreatedTasks(createdTasks + 1);
     setNewTask("");
   }
 
@@ -41,9 +40,22 @@ function App() {
     });
 
     setTasks(newTaskList);
-    setCreatedTasks(createdTasks - 1);
-    setCompletedTasks(completedTasks - 1);
   }
+
+  function completeTask(taskId: string) {
+    const newTaskList = [...tasks];
+
+    newTaskList.find((task) => {
+      if (task.id === taskId) return (task.status = "Concluída");
+    });
+
+    setTasks(newTaskList);
+  }
+
+  const createdTasks = tasks.length;
+  const completedTasks = tasks.filter(
+    (task) => task.status === "Concluída"
+  ).length;
 
   return (
     <div className={styles.wrapper}>
@@ -80,16 +92,16 @@ function App() {
         </div>
 
         <div className={styles.tasks}>
-          {createdTasks > 0 ? (
+          {tasks.length > 0 ? (
             tasks.map((task) => {
               return (
                 <Task
-                  taskDescription={task.taskDescription}
+                  taskDescription={task.description}
                   id={task.id}
                   key={task.id}
                   onDeleteTask={deleteTask}
-                  completedTasks={completedTasks}
-                  setCompletedTasks={setCompletedTasks}
+                  onCompleteTask={completeTask}
+                  taskStatus={task.status}
                 />
               );
             })

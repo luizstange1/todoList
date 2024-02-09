@@ -9,14 +9,14 @@
   margin-bottom: 0.75rem;
 }
 
-.taskDescription {
+.descriptionOfTheTaskInProgress {
   color: var(--gray-100);
   font-size: 0.875rem;
   flex: 1;
   margin: 0 1.5rem;
 }
 
-.taskDescriptionOfTheCompletedTask {
+.fullTaskDescription {
   color: var(--gray-300);
   text-decoration: line-through;
   flex: 1;

@@ -1,36 +1,29 @@
 import { Trash, Circle, CheckCircle } from "@phosphor-icons/react";
 import styles from "./Task.module.css";
-import { useState } from "react";
 
 interface TaskProps {
   taskDescription: string;
   id: string;
   onDeleteTask: (idToDelete: string) => void;
-  completedTasks: number;
-  setCompletedTasks: (completedTasks: number) => void;
+  onCompleteTask: (taskId: string) => void;
+  taskStatus: string;
 }
 
 export function Task({
   taskDescription,
   onDeleteTask,
   id,
-  completedTasks,
-  setCompletedTasks,
+  onCompleteTask,
+  taskStatus,
 }: TaskProps) {
-  const [taskIsComplete, setTaskIsComplete] = useState(false);
-
-  function hancleClickToCompleteTheTask() {
-    setTaskIsComplete(true);
-    setCompletedTasks(completedTasks + 1);
-  }
   return (
     <>
       <div className={styles.task}>
-        {!taskIsComplete ? (
+        {taskStatus === "Em andamento" ? (
           <Circle
             className={styles.iconToCompleteTask}
             size={24}
-            onClick={hancleClickToCompleteTheTask}
+            onClick={() => onCompleteTask(id)}
           />
         ) : (
           <CheckCircle
@@ -41,9 +34,9 @@ export function Task({
         )}
         <p
           className={
-            taskIsComplete
-              ? styles.taskDescriptionOfTheCompletedTask
-              : styles.taskDescription
+            taskStatus === "Em andamento"
+              ? styles.descriptionOfTheTaskInProgress
+              : styles.fullTaskDescription
           }
         >
           {taskDescription}
