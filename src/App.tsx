@@ -3,7 +3,7 @@ import styles from "./App.module.css";
 
 import { Header } from "./components/Header/Header";
 import { ClipboardText, PlusCircle } from "@phosphor-icons/react";
-import { ChangeEvent, useState } from "react";
+import { useRef, useState } from "react";
 import { Task } from "./components/Task/Task";
 
 import { v4 as uuidv4 } from "uuid";
@@ -15,15 +15,12 @@ interface Task {
 }
 
 function App() {
-  const [newTask, setNewTask] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
-
-  function handleNewTaskChange(event: ChangeEvent<HTMLInputElement>) {
-    const newTaskInfo = event.target.value;
-    setNewTask(newTaskInfo);
-  }
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function handleCreateNewTask() {
+    const newTask = inputRef.current?.value ?? "";
+
     const newTaskObject = {
       id: uuidv4(),
       description: newTask,
@@ -31,7 +28,9 @@ function App() {
     };
 
     setTasks([...tasks, newTaskObject]);
-    setNewTask("");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   }
 
   function deleteTask(idToDelete: string) {
@@ -66,8 +65,7 @@ function App() {
           type="text"
           className={styles.textArea}
           placeholder="Adicione uma nova tarefa"
-          value={newTask}
-          onChange={handleNewTaskChange}
+          ref={inputRef}
           required
         />
         <button className={styles.newTask} onClick={handleCreateNewTask}>
