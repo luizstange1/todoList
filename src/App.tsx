@@ -16,7 +16,15 @@ interface Task {
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [inactiveButton, setInactiveButton] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  function checkIfInputIsEmpty() {
+    if (inputRef.current!.value.trim().length > 0) {
+      return setInactiveButton(false);
+    }
+    return setInactiveButton(true);
+  }
 
   function handleCreateNewTask() {
     const newTask = inputRef.current?.value ?? "";
@@ -30,6 +38,7 @@ function App() {
     setTasks([...tasks, newTaskObject]);
     if (inputRef.current) {
       inputRef.current.value = "";
+      setInactiveButton(true);
     }
   }
 
@@ -67,8 +76,14 @@ function App() {
           placeholder="Adicione uma nova tarefa"
           ref={inputRef}
           required
+          maxLength={60}
+          onChange={checkIfInputIsEmpty}
         />
-        <button className={styles.newTask} onClick={handleCreateNewTask}>
+        <button
+          className={styles.newTask}
+          onClick={handleCreateNewTask}
+          disabled={inactiveButton}
+        >
           Criar
           <PlusCircle size={20} color="#fcfcfc" />
         </button>
