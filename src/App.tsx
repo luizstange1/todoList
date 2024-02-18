@@ -60,6 +60,16 @@ function App() {
     setTasks(newTaskList);
   }
 
+  function returnTaskToInProgress(taskId: string) {
+    const newTaskList = [...tasks];
+
+    newTaskList.find((task) => {
+      if (task.id === taskId) return (task.status = "Em andamento");
+    });
+
+    setTasks(newTaskList);
+  }
+
   const createdTasks = tasks.length;
   const completedTasks = tasks.filter(
     (task) => task.status === "Concluída"
@@ -114,6 +124,7 @@ function App() {
                   key={task.id}
                   onDeleteTask={deleteTask}
                   onCompleteTask={completeTask}
+                  onReturnTaskToInProgress={returnTaskToInProgress}
                   taskStatus={task.status}
                 />
               );

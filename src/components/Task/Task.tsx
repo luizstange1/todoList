@@ -6,6 +6,7 @@ interface TaskProps {
   id: string;
   onDeleteTask: (idToDelete: string) => void;
   onCompleteTask: (taskId: string) => void;
+  onReturnTaskToInProgress: (taskId: string) => void;
   taskStatus: string;
 }
 
@@ -15,6 +16,7 @@ export function Task({
   id,
   onCompleteTask,
   taskStatus,
+  onReturnTaskToInProgress,
 }: TaskProps) {
   return (
     <>
@@ -30,6 +32,7 @@ export function Task({
             size={24}
             className={styles.taskCompletedIcon}
             weight="fill"
+            onClick={() => onReturnTaskToInProgress(id)}
           />
         )}
         <p
