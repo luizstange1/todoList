@@ -86,7 +86,7 @@ function App() {
           placeholder="Adicione uma nova tarefa"
           ref={inputRef}
           required
-          maxLength={60}
+          maxLength={35}
           onChange={checkIfInputIsEmpty}
         />
         <button

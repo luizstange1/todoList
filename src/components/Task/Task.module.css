@@ -7,6 +7,22 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
+
+  @media (max-width: 800px) {
+    width: 38rem;
+  }
+
+  @media (max-width: 680px) {
+    width: 32rem;
+  }
+
+  @media (max-width: 560px) {
+    width: 24rem;
+  }
+
+  @media (max-width: 460px) {
+    width: 20rem;
+  }
 }
 
 .descriptionOfTheTaskInProgress {
@@ -14,6 +30,18 @@
   font-size: 0.875rem;
   flex: 1;
   margin: 0 1.5rem;
+
+  @media (max-width: 560px) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 460px) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .fullTaskDescription {
@@ -21,6 +49,18 @@
   text-decoration: line-through;
   flex: 1;
   margin: 0 1.5rem;
+
+  @media (max-width: 560px) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 460px) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .iconToCompleteTask,
